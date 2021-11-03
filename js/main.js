@@ -2,36 +2,51 @@ var listProducts = [];
 
 function CallTest() {
     console.log("Fetch list product");
+    // bài 10
     fetchListProduct();
     console.log(listProducts);
 
+    // bài 11
     console.log("Tìm kiếm theo id by for");
     console.log(filterProductById(listProducts, 3));
 
     console.log("Tìm kiếm by id es6");
     console.log(filterProductByIdEs6(listProducts, 5));
 
+    // bài 12
     console.log("Tìm kiếm by quanlity > 0 and isDelete = false using for");
     console.log(filterProductByQuality(listProducts));
 
     console.log("Tìm kiếm by quanlity > 0 and isDelete = false using Es6");
     console.log(filterProductByQualityEs6(listProducts));
 
+    // bài 13
     console.log("Tìm kiếm saleDate lớn hơn ngày hiện tại and isDelete = false using for");
     console.log(filterProductBySaleDate(listProducts));
 
     console.log("Tìm kiếm saleDate lớn hơn ngày hiện tại and isDelete = false using Es6");
     console.log(filterProductBySaleDateEs6(listProducts));
 
+    // bài 14
+    console.log("Tìm kiếm tổng quality các sản phẩm chưa bị xóa , dùng for");
     console.log(totalProduct(listProducts));
+
+    console.log("Tìm kiếm tổng quality các sản phẩm chưa bị xóa , dùng Es6");
     console.log(totalProductEs6(listProducts));
 
+    // bài 15
     console.log("Tìm kiếm có tồn tại product nào có categoryId không, dùng for");
     console.log(isHaveProductInCategory(listProducts, 11));
     console.log(isHaveProductInCategory(listProducts, 10));
 
+    console.log("Tìm kiếm có tồn tại product nào có categoryId không, dùng Es6");
+    console.log(isHaveProductInCategoryEs6(listProducts, 11));
+    console.log(isHaveProductInCategoryEs6(listProducts, 10));
+
+    // bài 16
     console.log("Tìm kiếm array chứa array string (id, tên) product có saleDate > ngày hiện tại và quality > 0")
     console.log(filterArrayProductBySaleDate(listProducts));
+    console.log("Tìm kiếm array chứa array string (id, tên) product có saleDate > ngày hiện tại và quality > 0 sử dụng Es6")
     console.log(filterArrayProductBySaleDateEs6(listProducts));
 }
 
@@ -157,11 +172,11 @@ var totalProductEs6 = (listProduct) => {
     if (!listProduct)
         return 0;
 
-    var count = listProduct.reduce((total, value) => {
+    var count = listProduct.reduce((total, value, index, array) => {
         if (value.isDelete === true)
             total++;
         return total;
-    })
+    }, 0)
     return count;
 }
 
@@ -194,7 +209,7 @@ var isHaveProductInCategoryEs6 = (listProduct, categoryId) => {
 }
 
 /*
- * Bài 16 :
+ * Bài 16 :Tìm kiếm array chứa array string (id, tên) product có saleDate > ngày hiện tại và quality > 0 sử dụng for
  */
 var filterArrayProductBySaleDate = (listProduct) => {
     if (!listProduct)
@@ -213,6 +228,9 @@ var filterArrayProductBySaleDate = (listProduct) => {
     return output;
 }
 
+/*
+ * Bài 16 :Tìm kiếm array chứa array string (id, tên) product có saleDate > ngày hiện tại và quality > 0 sử dụng Es6
+ */
 var filterArrayProductBySaleDateEs6 = (listProduct) => {
     if (!listProduct)
         return null;
