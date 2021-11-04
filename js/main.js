@@ -89,7 +89,7 @@ var filterProductById = (listProduct, idProduct) => {
 }
 
 /*
- * Bài 11 : Tìm product theo Id using es6
+ * Bài 11 : Tìm product theo Id using es6 sử dụng find
  */
 var filterProductByIdEs6 = (listProduct, idProduct) => {
     if (!listProduct || idProduct < 0)
@@ -110,15 +110,12 @@ var filterProductByQuality = (listProduct) => {
 }
 
 /*
- * Bài 12 : Tìm product theo quality > 0 và isDelete = false using Es6
+ * Bài 12 : Tìm product theo quality > 0 và isDelete = false using Es6 sử dụng filter
  */
 var filterProductByQualityEs6 = (listProduct) => {
     if (!listProduct)
         return null;
-
-    return listProduct.filter(product => {
-        return product.quality > 0 && !product.isDelete;
-    })
+    return listProduct.filter(product => product.quality > 0 && !product.isDelete);
 }
 
 /*
@@ -139,10 +136,7 @@ var filterProductBySaleDate = (listProduct) => {
 var filterProductBySaleDateEs6 = (listProduct) => {
     if (!listProduct)
         return null;
-
-    return listProduct.filter(product => {
-        return compare_dates(product.saleDate, getDate()) == 1 && !product.isDelete;
-    })
+    return listProduct.filter(product => compare_dates(product.saleDate, getDate()) == 1 && !product.isDelete)
 }
 
 /*
@@ -161,12 +155,12 @@ var totalProduct = (listProduct) => {
 }
 
 /*
- * Bài 14: Tính tổng các sản phẩm (tổng quality) chưa bị xóa sử dụng Es6
+ * Bài 14: Tính tổng các sản phẩm (tổng quality) chưa bị xóa sử dụng Es6 sử dung reduce
  */
 var totalProductEs6 = (listProduct) => {
     if (!listProduct)
         return 0;
-    return listProduct.filter(product => !product.isDelete).reduce((total, value) => total + value.quality, 0);
+    return listProduct.reduce((total, value) => !value.isDelete ? total + value.quality : total, 0);
 }
 
 /*
@@ -184,14 +178,12 @@ var isHaveProductInCategory = (listProduct, categoryId) => {
 }
 
 /*
- * Bài 15 : Es6 Array.find()
+ * Bài 15 : Es6 Array.some
  */
 var isHaveProductInCategoryEs6 = (listProduct, categoryId) => {
-    let output = false;
     if (!listProduct || categoryId < 0)
         return false;
-    listProduct.find(product => product.categoryId === categoryId ? output = true : output = false);
-    return output;
+    return listProduct.some(product => product.categoryId === categoryId);
 }
 
 /*
@@ -215,17 +207,14 @@ var filterArrayProductBySaleDate = (listProduct) => {
 }
 
 /*
- * Bài 16 :Tìm kiếm array chứa array string (id, tên) product có saleDate > ngày hiện tại và quality > 0 sử dụng Es6
+ * Bài 16 :Tìm kiếm array chứa array (id, tên) product có saleDate > ngày hiện tại và quality > 0 sử dụng Es6
  */
 var filterArrayProductBySaleDateEs6 = (listProduct) => {
     if (!listProduct)
         return null;
 
-    let output = [];
-    listProduct.filter(product => product.quality > 0 && compare_dates(product.saleDate, getDate()) == 1).map(value => {
-        output.push(new Array(value.id, value.name))
-    })
-    return output;
+    return listProduct.filter(product => product.quality > 0 && compare_dates(product.saleDate, getDate()) == 1)
+        .map(product => [product.id, product.name]);
 }
 
 
@@ -235,6 +224,11 @@ var filterArrayProductBySaleDateEs6 = (listProduct) => {
 var getDate = () => {
     let today = new Date();
     return today.getMonth() + '/' + today.getDate() + '/' + today.getFullYear();
+}
+
+var getDate = (i) => {
+    let today = new Date();
+    return today.getMonth() + '/' + (today.getDate() + i) + '/' + today.getFullYear();
 }
 
 /*
