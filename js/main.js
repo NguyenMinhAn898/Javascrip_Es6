@@ -28,6 +28,7 @@ function CallTest() {
     console.log(filterProductBySaleDateEs6(listProducts));
 
     // bài 14
+    console.log("Bài 14: ");
     console.log("Tìm kiếm tổng quality các sản phẩm chưa bị xóa , dùng for");
     console.log(totalProduct(listProducts));
 
@@ -93,13 +94,7 @@ var filterProductById = (listProduct, idProduct) => {
 var filterProductByIdEs6 = (listProduct, idProduct) => {
     if (!listProduct || idProduct < 0)
         return null;
-
-    let product = null;
-    listProduct.find((value, index, array) => {
-        if (value.id == idProduct)
-            product = value;
-    })
-    return product;
+    return listProduct.find(x => x.id == idProduct);
 }
 
 /*
@@ -108,7 +103,7 @@ var filterProductByIdEs6 = (listProduct, idProduct) => {
 var filterProductByQuality = (listProduct) => {
     let list = [];
     for (let i = 0; i < listProduct.length; i++) {
-        if (listProduct[i].quality > 0 && listProduct[i].isDelete == false)
+        if (listProduct[i].quality > 0 && !listProduct[i].isDelete)
             list.push(listProduct[i]);
     }
     return list;
@@ -118,12 +113,12 @@ var filterProductByQuality = (listProduct) => {
  * Bài 12 : Tìm product theo quality > 0 và isDelete = false using Es6
  */
 var filterProductByQualityEs6 = (listProduct) => {
-    let list = [];
-    listProduct.filter((value, index, array) => {
-        if (value.quality > 0 && value.isDelete == false)
-            list.push(value);
+    if (!listProduct)
+        return null;
+
+    return listProduct.filter(product => {
+        return product.quality > 0 && !product.isDelete;
     })
-    return list;
 }
 
 /*
@@ -132,7 +127,7 @@ var filterProductByQualityEs6 = (listProduct) => {
 var filterProductBySaleDate = (listProduct) => {
     let list = [];
     for (let i = 0; i < listProduct.length; i++) {
-        if (compare_dates(listProduct[i].saleDate, getDate()) == 1 && listProduct[i].isDelete == false)
+        if (compare_dates(listProduct[i].saleDate, getDate()) == 1 && !listProduct[i].isDelete)
             list.push(listProduct[i])
     }
     return list;
@@ -142,23 +137,23 @@ var filterProductBySaleDate = (listProduct) => {
  * Bài 13 : Tìm product theo saleDate > date now và isDelete = false using Es6
  */
 var filterProductBySaleDateEs6 = (listProduct) => {
-    let list = [];
-    listProduct.filter((value, index, array) => {
-        if (compare_dates(value.saleDate, getDate()) == 1 && value.isDelete == false)
-            list.push(value);
+    if (!listProduct)
+        return null;
+
+    return listProduct.filter(product => {
+        return compare_dates(product.saleDate, getDate()) == 1 && !product.isDelete;
     })
-    return list;
 }
 
 /*
- * Bài 14: Tính tổng các sản phẩm (tổng quality) chưa bị xóa
+ * Bài 14: Tính tổng các sản phẩm (tổng quality) chưa bị xóa isDelete = false
  */
 var totalProduct = (listProduct) => {
     let total = 0;
     if (!listProduct)
         return count;
     for (let i = 0; i < listProduct.length; i++) {
-        if (listProduct[i].isDelete == true) {
+        if (!listProduct[i].isDelete) {
             total += listProduct[i].quality;
         }
     }
@@ -171,13 +166,7 @@ var totalProduct = (listProduct) => {
 var totalProductEs6 = (listProduct) => {
     if (!listProduct)
         return 0;
-
-    var count = listProduct.reduce((total, value, index, array) => {
-        if (value.isDelete === true)
-            total++;
-        return total;
-    }, 0)
-    return count;
+    return listProduct.filter(product => !product.isDelete).reduce((total, value) => total + value.quality, 0);
 }
 
 /*
@@ -201,10 +190,7 @@ var isHaveProductInCategoryEs6 = (listProduct, categoryId) => {
     let output = false;
     if (!listProduct || categoryId < 0)
         return false;
-    listProduct.find((value, index, array) => {
-        if (value.categoryId == categoryId)
-            output = true;
-    })
+    listProduct.find(product => product.categoryId === categoryId ? output = true : output = false);
     return output;
 }
 
@@ -236,7 +222,7 @@ var filterArrayProductBySaleDateEs6 = (listProduct) => {
         return null;
 
     let output = [];
-    listProduct.map((value, index, array) => {
+    listProduct.filter(product => product.quality > 0 && compare_dates(product.saleDate, getDate()) == 1).map(value => {
         output.push(new Array(value.id, value.name))
     })
     return output;
